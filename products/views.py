@@ -7,8 +7,21 @@ def get_products(request, slug):
 
     try:
         product = Product.objects.get(slug_field = slug)
+        context = {"product":product}
 
-        return render(request, "product/product.html", context = {"product":product})
+        if request.GET.get('size'):
+
+            size = request.GET.get('size')
+            print(size)
+
+            price = product.get_product_by_size(size)
+
+            print(price)
+            context["selected_size"] = size
+            context["updated_price"] = price
+
+
+        return render(request, "product/product.html", context)
     
     except Exception as e:
 
